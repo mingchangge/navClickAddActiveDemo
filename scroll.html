@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link href="http://resource.cnpickups.com/maiche/static/css/normalize.css" rel="stylesheet" />
+	<style type="text/css">
+		.nav{
+			width: 1000px;
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
+		.nav ul{
+			display: flex;
+		}
+		.nav li{
+			flex: 1;
+			margin: 0 10px;
+			background: blue;
+			text-align: center;
+		}
+		.nav li a.active{
+			border-bottom: 4px solid red;
+		}
+		.nav_content{
+			margin-top: 80px;
+		}
+		#s1{
+			height: 100px;
+		}
+		#s2{
+			height: 200px;
+		}
+		#s3{
+			height: 500px;
+		}
+		#s4{
+			height: 200px;
+		}
+	</style>
+</head>
+<body>
+<div class="nav">
+	<ul>
+		<li><a href="#s1" class="active">s1</a></li>
+		<li><a href="#s2">s2</a></li>
+		<li><a href="#s3">s3</a></li>
+		<li><a href="#s4">s4</a></li>
+	</ul>
+</div>
+<div class="nav_content">
+	<div id="s1"><div>1</div></div>
+	<div id="s2">2</div>
+	<div id="s3">3</div>
+	<div id="s4">4</div>
+</div>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+	function addActive(id){
+		var curren=$('.nav').find('.active');
+		if(id && curren.attr('href')!=id){ 
+			curren.removeClass('active'); 
+			$('.nav').find('[href='+id+']').addClass('active'); 
+		} 
+	}
+	$('.nav li a').click(function(){
+		var href=$(this).attr('href');
+		var top=$(href).offset().top;
+		addActive(href);
+		$('html,body').animate({
+			scrollTop: top
+		},500);
+		return false;
+	})
+	if(window.location.hash){
+		addActive(window.location.hash);
+		var topScroll = $(window.location.hash).offset().top;
+		$("html,body").animate({scrollTop:topScroll},300);	
+	}
+	$(window).scroll(function(){
+		var activeId='';
+		var top=$(document).scrollTop();
+		var div=$('.nav_content').children('div');
+		div.each(function(){
+			var _this=this;
+			var divTop=$(_this).offset().top;
+			if(top>divTop-100){ 
+				activeId='#' + $(_this).attr('id'); 
+			}else{ 
+				return false; 
+			} 
+		});
+		addActive(activeId);
+	});
+</script>
+</body>
+</html>
